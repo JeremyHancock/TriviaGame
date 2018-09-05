@@ -1,3 +1,6 @@
+var timerStart = 10;
+var IntervalId;
+var timerRunning = false;
 var count = 0;
 var wrongAnswers = 0;
 var correctAnswers = 0;
@@ -6,7 +9,6 @@ var answerB = false;
 var answerC = false;
 var answerD = false;
 
-
 var questions = [
     {
         question: "In what Pennsylvania town is The Office located?",
@@ -14,7 +16,7 @@ var questions = [
         answer2: ["Scranton", true],
         answer3: ["Philadelphia", false],
         answer4: ["Punxatawny", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/scranton.jpg"
     },
     {
         question: "Dwight operates a beet farm called, what?",
@@ -22,7 +24,7 @@ var questions = [
         answer2: ["Poor Richard's Farm", false],
         answer3: ["Shrute Farm", false],
         answer4: ["Shrute Farms", true],
-        answerImage: "Answer"
+        answerImage: "assets/images/Shrute_Farms.jpg"
     },
     {
         question: "What is Creed's job title?",
@@ -30,7 +32,7 @@ var questions = [
         answer2: ["Quality Control Director", false],
         answer3: ["Quality Control Supervisor", false],
         answer4: ["Creed has no official job title or duties", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/creed.jpg"
     },
     {
         question: "Who does Michael Scott fire in the first Halloween episode?",
@@ -38,7 +40,7 @@ var questions = [
         answer2: ["Josh", false],
         answer3: ["Mose", false],
         answer4: ["Hunter", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/devon.png"
     },
     {
         question: "How does Dwight stop Roy from attacking Jim after Roy finds out about Jim and Pam's kiss?",
@@ -46,7 +48,7 @@ var questions = [
         answer2: ["Crying", false],
         answer3: ["'Michael!'", false],
         answer4: ["Pepper spray", true],
-        answerImage: "Answer"
+        answerImage: "assets/images/roy.png"
     },
     {
         question: "What is the name of the pie stand that the employees visit on the work bus?",
@@ -54,7 +56,7 @@ var questions = [
         answer2: ["War and Pies", false],
         answer3: ["Laverne's Pie Stand", true],
         answer4: ["Pied Pie-per Pie Stand", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/Lavernes-Pies.jpg"
     },
     {
         question: "What activity does Kelly choose for her birthday gift from Jim and Dwight?",
@@ -62,7 +64,7 @@ var questions = [
         answer2: ["Go shopping", false],
         answer3: ["Watch TV at work", false],
         answer4: ["Marry Ryan", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/kelly.jpg"
     },
     {
         question: "What is the name of Jan Levinson's line of candles?",
@@ -70,7 +72,7 @@ var questions = [
         answer2: ["Candle you handle it?", false],
         answer3: ["Femininity, by Jan", false],
         answer4: ["Serenity, by Jan", true],
-        answerImage: "Answer"
+        answerImage: "assets/images/serenity.jpg"
     },
     {
         question: "What is the title of the book that Michael 'is writing' ?",
@@ -78,7 +80,7 @@ var questions = [
         answer2: ["Michael Scarn: private eye", false],
         answer3: ["Like Mike", false],
         answer4: ["Prison Mike defeats the dementors", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/somehow.jpg"
     },
     {
         question: "What is the name of Kevin Malone's band?",
@@ -86,12 +88,14 @@ var questions = [
         answer2: ["Scrantonicity", false],
         answer3: ["Ross Can", false],
         answer4: ["Message In A Bottle", false],
-        answerImage: "Answer"
+        answerImage: "assets/images/scrantonicity-ii.png"
     },
 
 ];
 //  a function that advances through the questions array each time a new question is needed and assigns the answer and a boolean value
 function nextQuestion() {
+    $('#centerImage').attr("src","");
+
     $("#question").text(questions[count].question);
 
     $("#answerA").text(questions[count].answer1[0]);
@@ -107,76 +111,77 @@ function nextQuestion() {
     answerD = (questions[count].answer4[1]);
     //advances the count variable to move to the next question
     count++;
-
     $(".qAndA").show();
-    $("#instructions").hide();
-    $("#win").hide();
-    $("#lose").hide();
-    countDown();
+    $("#instructions, #win, #lose").hide();
+    start();
 }
-// create the timer for the start screen and for the win and lose functions
+// create the unseen timer for the start screen and for the win and lose functions
 function timesUp() {
     if (count === questions.length) {
-        summary();
+        setTimeout(summary, 3500);
     }
     else {
         setTimeout(nextQuestion, 3500);
     }
 }
-// the displayed timer that runs when down when a question is asked
-function countDown() {
-    var myVar = setInterval(myTimer, 1000);
-    var initialTime = 1000 * 10;
-    function myTimer() {
-        var d = initialTime;
-        var t = d - 1000;
-        initialTime = t;
-        $("#timerDisplay").text(t / 1000 + " seconds left");
-        if (t / 1000 === 0) {
-            clearInterval(myVar);
-            wrong();
-        }
-        console.log(t);
+// the displayed timer that runs down when a question is asked
+function start() {
+    timerStart = 11;
+    if (!timerRunning) {
+      $("#timerDisplay").show();
+        intervalId = setInterval(timerChange, 1000);
+        timerRunning = true;
+    }
+}
+function stop() {
+    clearInterval(intervalId);
+    timerRunning = false;
+}
+
+function timerChange() {
+    timerStart--;
+    $("#timerDisplay").show();
+    $("#timerDisplay").text(timerStart + " seconds left");
+    if (timerStart === 0) {
+        stop();
+        wrong();
     }
 }
 // summarize results at quiz end
 function summary() {
-    $(".qAndA, #win, #lose, #instructions, button").hide();
-    console.log("wrong = " + wrongAnswers);
-    console.log("right = " + correctAnswers);
+    $(".qAndA, button").hide();
+    $("#lose, #win, #instructions").show();
+    $("#lose").text("You answered " + wrongAnswers + " questions incorrectly");
+    $("#win").text("You answered " + correctAnswers + " questions correctly");
+    $("#instructions").text("Congratulations.");
+    $('#centerImage').attr("src","assets/images/assistant.jpg");
+
 }
 // instructions for when a correct answer is selected
 function right() {
+    stop();
+    $("#timerDisplay, .qAndA").hide();
     $("#win").show();
-    $(".qAndA").hide();
-    $("button").text("Next Question");
+    $('#centerImage').attr("src",questions[count-1].answerImage);
+
     correctAnswers++;
     timesUp();
-    console.log("#of correct " + correctAnswers);
 }
 // instructions for when a wrong answer is selected or time runs out
 function wrong() {
+    stop();
+    $("#timerDisplay, .qAndA").hide();
     $("#lose").show()
-    $(".qAndA").hide();
-    $("button").text("Next Question");
+    $('#centerImage').attr("src",questions[count-1].answerImage );
     wrongAnswers++;
     timesUp();
     console.log("#of wrong " + wrongAnswers);
 }
 
 $(document).ready(function () {
-    $(".qAndA, #win, #lose").hide();
-    // show instructions with a click to continue
+    $(".qAndA, #win, #lose, #timerDisplay").hide();
     $("#instructions")
     timesUp();
-    $("button").click(function () {
-        if (count === questions.length) {
-            summary();
-        }
-        else {
-            nextQuestion();
-        }
-    });
 
     $("#buttonA").click(function () {
         if (answerA === true) {

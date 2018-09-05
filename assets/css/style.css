@@ -1,0 +1,22 @@
+*{
+    text-align: center;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.container {
+    background-color: white;
+}
+
+.form-check{
+    text-align: left;
+}
+
+#centerImage{
+    max-width: 75%;
+}
