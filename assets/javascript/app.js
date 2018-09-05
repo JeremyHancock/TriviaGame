@@ -154,7 +154,10 @@ function summary() {
     $("#lose").text("You answered " + wrongAnswers + " questions incorrectly");
     $("#win").text("You answered " + correctAnswers + " questions correctly");
     $("#instructions").text("Congratulations.");
-    $('#centerImage').attr("src","assets/images/assistant.jpg");
+    $("#centerImage").attr("src","assets/images/assistant.jpg");
+    count = 0;
+    $("#playAgain").text("Click here to play again!");
+    $("#playAgain").click(nextQuestion);
 
 }
 // instructions for when a correct answer is selected
