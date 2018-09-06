@@ -96,6 +96,8 @@ var questions = [
 function nextQuestion() {
     $('#centerImage').attr("src","");
 
+    $("#buttonA, #buttonB, #buttonC, #buttonD").prop("checked",false);
+
     $("#question").text(questions[count].question);
 
     $("#answerA").text(questions[count].answer1[0]);
@@ -178,7 +180,6 @@ function wrong() {
     $('#centerImage').attr("src",questions[count-1].answerImage );
     wrongAnswers++;
     timesUp();
-    console.log("#of wrong " + wrongAnswers);
 }
 
 $(document).ready(function () {
