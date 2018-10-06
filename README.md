@@ -4,4 +4,4 @@ This is a simple Trivia Game written in Javascript utilizing some timer function
 
 This is trivia from The Office tv show. Guess correctly and you may become Assistant To The Regional Manager!
 
-I used HTML, CSS, jQuery, and Javascript.
+I used HTML, CSS, Bootstrap, jQuery, and Javascript.

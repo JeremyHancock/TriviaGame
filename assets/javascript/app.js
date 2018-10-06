@@ -94,21 +94,16 @@ var questions = [
 ];
 //  a function that advances through the questions array each time a new question is needed and assigns the answer and a boolean value
 function nextQuestion() {
-    $('#centerImage').attr("src","");
-
-    $("#buttonA, #buttonB, #buttonC, #buttonD").prop("checked",false);
-
+    $('#centerImage').attr("src", "");
+    $("#playAgain").text("");
+    $("#buttonA, #buttonB, #buttonC, #buttonD").prop("checked", false);
     $("#question").text(questions[count].question);
-
     $("#answerA").text(questions[count].answer1[0]);
     answerA = (questions[count].answer1[1])
-
     $("#answerB").text(questions[count].answer2[0]);
     answerB = (questions[count].answer2[1]);
-
     $("#answerC").text(questions[count].answer3[0]);
     answerC = (questions[count].answer3[1]);
-
     $("#answerD").text(questions[count].answer4[0]);
     answerD = (questions[count].answer4[1]);
     //advances the count variable to move to the next question
@@ -130,7 +125,7 @@ function timesUp() {
 function start() {
     timerStart = 11;
     if (!timerRunning) {
-      $("#timerDisplay").show();
+        $("#timerDisplay").show();
         intervalId = setInterval(timerChange, 1000);
         timerRunning = true;
     }
@@ -156,7 +151,7 @@ function summary() {
     $("#lose").text("You answered " + wrongAnswers + " questions incorrectly");
     $("#win").text("You answered " + correctAnswers + " questions correctly");
     $("#instructions").text("Congratulations.");
-    $("#centerImage").attr("src","assets/images/assistant.jpg");
+    $("#centerImage").attr("src", "assets/images/assistant.jpg");
     count = 0;
     $("#playAgain").text("Click here to play again!");
     $("#playAgain").click(nextQuestion);
@@ -167,7 +162,7 @@ function right() {
     stop();
     $("#timerDisplay, .qAndA").hide();
     $("#win").show();
-    $('#centerImage').attr("src",questions[count-1].answerImage);
+    $('#centerImage').attr("src", questions[count - 1].answerImage);
 
     correctAnswers++;
     timesUp();
@@ -177,7 +172,7 @@ function wrong() {
     stop();
     $("#timerDisplay, .qAndA").hide();
     $("#lose").show()
-    $('#centerImage').attr("src",questions[count-1].answerImage );
+    $('#centerImage').attr("src", questions[count - 1].answerImage);
     wrongAnswers++;
     timesUp();
 }
